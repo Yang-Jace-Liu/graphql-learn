@@ -31,6 +31,11 @@ const loadDatabase = async () => {
     const orders = dictify(await getAllRows(db, "orders"), "id");
     const order_items = dictify(await getAllRows(db, "order_items"), "order_id");
 
+    // add users reference
+    Object.values(users).forEach((user) => {
+        user.country = countries[user.country_code];
+    });
+
     return {countries, users, merchants, products, orders, order_items}
 };
 
