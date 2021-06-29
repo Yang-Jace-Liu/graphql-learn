@@ -6,7 +6,7 @@ const {buildSchema} = require('graphql');
 const fs = require("fs");
 const {loadDatabase} = require("./db");
 
-const {getUser, getAllUsers} = require("./api/user");
+const {getUser, getAllUsers, addUser} = require("./api/user");
 
 const schemaContent = fs.readFileSync("./schema.graphql").toString();
 const schema = buildSchema(schemaContent);
@@ -16,9 +16,9 @@ loadDatabase().then((db_samples) => {
 
     const root = {
         user: (args) => getUser(db_samples["users"], args.id),
-        users: () => getAllUsers(db_samples["users"])
+        users: () => getAllUsers(db_samples["users"]),
+        addUser: (args) => addUser(db_samples["users"], db_samples["countries"], args.user)
     };
-
 
     app.use('/graphql', graphqlHTTP({
         schema: schema,  // Must be provided

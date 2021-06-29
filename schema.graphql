@@ -1,11 +1,13 @@
+scalar DateTime
+
 type User {
     id: Int!
     full_name: String!
-    email: String!
+    email(mask: Boolean = false): String!
     gender: String!
     date_of_birth: String!
     country: Country!
-    created_at: String
+    created_at: DateTime!
 }
 
 type Country {
@@ -16,5 +18,19 @@ type Country {
 
 type Query {
     user(id: Int!): User
-    users: [User]
+    users: [User!]!
+}
+
+input UserInput {
+    id: Int
+    full_name: String!
+    email: String!
+    gender: String!
+    date_of_birth: String!
+    country_code: Int!
+    created_at: DateTime
+}
+
+type Mutation {
+    addUser(user: UserInput!): User
 }
